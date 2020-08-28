@@ -1,17 +1,23 @@
-variable "name" {}
+variable "name" {
+  type    = string
+  default = "k3s-ha"
+}
 
 variable "vpc_id" {
-  default = null
+  type = string
 }
 
 variable "subnets" {
-  default = null
+  type = string
 }
 
 variable "ami" {
-  default = null
+  default = "ami-02354e95b39ca8dec"
 }
 
 variable "tags" {
-  default = {}
+  default = {
+    "terraform" = "true",
+    "env"       = "demo",
+  }
 }
