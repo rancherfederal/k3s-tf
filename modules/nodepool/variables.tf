@@ -85,12 +85,12 @@ variable "desired" {
 #
 variable "k3s_token" {
   type    = string
-  default = null
+  default = ""
 }
 
 variable "k3s_url" {
   type    = string
-  default = null
+  default = ""
 }
 
 variable "k3s_tls_sans" {
@@ -100,7 +100,7 @@ variable "k3s_tls_sans" {
 
 variable "k3s_datastore_endpoint" {
   type    = string
-  default = null
+  default = "'"
 }
 
 variable "k3s_kubelet_args" {
