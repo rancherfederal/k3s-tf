@@ -7,10 +7,6 @@ locals {
   shared_sgs = var.k3s_url == "" ? [data.aws_security_group.shared.id, data.aws_security_group.shared_server.id] : [data.aws_security_group.shared.id]
 }
 
-data "aws_vpc" "this" {
-  id = var.vpc_id
-}
-
 resource "aws_security_group" "this" {
   name_prefix = "${var.name}-k3s-nodepool"
   vpc_id      = var.vpc_id

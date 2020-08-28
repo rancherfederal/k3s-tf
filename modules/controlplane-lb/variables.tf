@@ -39,7 +39,7 @@ variable "interval" {
 
 variable "timeout" {
   type    = number
-  default = 10
+  default = 5
 }
 
 variable "tags" {
