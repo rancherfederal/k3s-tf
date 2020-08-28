@@ -3,6 +3,8 @@ locals {
     "Name"                                 = "${var.name}-nodepool",
     "kubernetes.io/cluster/${var.cluster}" = "owned"
   }, var.tags)
+
+  shared_sgs = var.k3s_url == "" ? [data.aws_security_group.shared.id, data.aws_security_group.shared_server.id] : [data.aws_security_group.shared.id]
 }
 
 data "aws_vpc" "this" {
@@ -24,12 +26,17 @@ data "aws_security_group" "shared" {
   name   = "${var.cluster}-k3s-shared-sg"
 }
 
+data "aws_security_group" "shared_server" {
+  vpc_id = var.vpc_id
+  name   = "${var.cluster}-k3s-shared-server-sg"
+}
+
 resource "aws_launch_template" "this" {
   name                   = "${var.name}-k3s-nodepool"
   image_id               = var.ami
   instance_type          = var.instance_type
   user_data              = data.template_cloudinit_config.this.rendered
-  vpc_security_group_ids = concat([aws_security_group.this.id], [data.aws_security_group.shared.id], var.extra_vpc_security_group_ids)
+  vpc_security_group_ids = concat([aws_security_group.this.id], local.shared_sgs, var.extra_vpc_security_group_ids)
 
   //  dynamic "block_device_mappings" {
   //    for_each = var.block_device_mappings
