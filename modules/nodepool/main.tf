@@ -63,6 +63,8 @@ resource "aws_launch_template" "this" {
 #
 # Autoscaling group
 #
+
+# NOTE: This will only get attached to the ASG if we're dealing with a server
 data "aws_lb_target_group" "controlplane" {
   name = "${var.cluster}-k3s-server-tg"
 }
@@ -75,6 +77,7 @@ resource "aws_autoscaling_group" "this" {
   max_size         = var.max
   desired_capacity = var.desired
 
+  # Health check and target groups dependent on whether we're a server or not (identified via k3s_url)
   health_check_type = var.k3s_url == "" ? "EC2" : "ELB"
   target_group_arns = var.k3s_url == "" ? [] : [data.aws_lb_target_group.controlplane.arn]
 

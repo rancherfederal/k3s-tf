@@ -22,7 +22,8 @@ module "k3s" {
 
 # Primary server nodepool
 module "servers" {
-  source = "../../modules/nodepool"
+  source     = "../../modules/nodepool"
+  depends_on = [module.k3s]
 
   vpc_id  = var.vpc_id
   subnets = var.subnets
@@ -39,7 +40,8 @@ module "servers" {
 
 # Generic a gent nodepool
 module "generic_agents" {
-  source = "../../modules/nodepool"
+  source     = "../../modules/nodepool"
+  depends_on = [module.k3s]
 
   vpc_id  = var.vpc_id
   subnets = var.subnets
