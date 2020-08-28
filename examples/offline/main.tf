@@ -3,10 +3,10 @@ provider "aws" {
 }
 
 locals {
-  pre_userdata = templatefile("fetchdeps.sh", {
+  pre_userdata = base64encode(templatefile("fetchdeps.sh", {
     k3s_binary_download_url = "${var.fileserver_url}/k3s"
     k3s_images_download_url = "${var.fileserver_url}/k3s-airgap-images-amd64.tar"
-  })
+  }))
 }
 
 module "k3s" {

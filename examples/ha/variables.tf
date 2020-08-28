@@ -8,7 +8,7 @@ variable "vpc_id" {
 }
 
 variable "subnets" {
-  type = string
+  type = list(string)
 }
 
 variable "ami" {
