@@ -15,6 +15,10 @@ variable "ami" {
   default = "ami-02354e95b39ca8dec"
 }
 
+variable "iam_instance_profile" {
+  default = ""
+}
+
 variable "fileserver_url" {
   type = string
 
