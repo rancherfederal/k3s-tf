@@ -7,7 +7,8 @@ provision() {
 %{ for arg in node_taints }--node-taint "${arg}" %{ endfor } \
 
 %{ if is_server ~}
-    --datastore-endpoint "${datastore_endpoint}" \
+# TODO: Once perms are fixed
+#    --datastore-endpoint "${datastore_endpoint}" \
 %{ for arg in tls_sans }--tls-san "${arg}" %{ endfor }
 
 %{ else ~}
