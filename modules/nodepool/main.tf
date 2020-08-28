@@ -76,7 +76,7 @@ resource "aws_autoscaling_group" "this" {
 
   # Health check and target groups dependent on whether we're a server or not (identified via k3s_url)
   health_check_type = var.k3s_url == "" ? "ELB" : "EC2"
-  load_balancers    = var.k3s_url == "" ? [data.aws_lb.controlplane.name] : []
+  load_balancers    = var.k3s_url == "" ? [data.aws_elb.controlplane.name] : []
 
   dynamic "launch_template" {
     for_each = var.spot ? [] : ["spot"]
