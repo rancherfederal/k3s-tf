@@ -30,7 +30,7 @@ variable "auto_deployed_manifests" {
 
 variable "extra_vpc_security_group_ids" {
   type    = list(string)
-  default = null
+  default = []
 }
 
 variable "instance_type" {
