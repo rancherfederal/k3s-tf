@@ -35,7 +35,7 @@ resource "aws_launch_template" "this" {
   image_id               = var.ami
   instance_type          = var.instance_type
   user_data              = data.template_cloudinit_config.this.rendered
-  vpc_security_group_ids = concat([aws_security_group.this.id], data.aws_security_group.shared.id, var.extra_vpc_security_group_ids)
+  vpc_security_group_ids = concat([aws_security_group.this.id], [data.aws_security_group.shared.id], var.extra_vpc_security_group_ids)
 
   //  dynamic "block_device_mappings" {
   //    for_each = var.block_device_mappings
