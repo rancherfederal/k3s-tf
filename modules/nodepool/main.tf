@@ -62,7 +62,7 @@ resource "aws_launch_template" "this" {
 #
 
 # NOTE: This will only get attached to the ASG if we're dealing with a server
-data "aws_lb" "controlplane" {
+data "aws_elb" "controlplane" {
   name = "${var.cluster}-k3s-controlplane"
 }
 
