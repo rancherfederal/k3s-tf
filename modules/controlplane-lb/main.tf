@@ -1,7 +1,7 @@
 #
 # Classic Load Balancer Resources
 #
-resource "aws_elb" "this_classic" {
+resource "aws_elb" "this" {
   name                      = "${var.name}-k3s-controlplane"
   internal                  = var.internal
   subnets                   = var.subnets

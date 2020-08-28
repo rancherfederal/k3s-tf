@@ -1,7 +1,7 @@
 output "dns" {
-  value = aws_lb.this.dns_name
+  value = aws_elb.this.dns_name
 }
 
 output "port" {
-  value = aws_lb_target_group.server.port
+  value = aws_elb.this.listener.lb_port
 }
