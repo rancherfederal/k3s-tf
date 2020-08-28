@@ -120,8 +120,3 @@ resource "aws_autoscaling_group" "this" {
     }
   }
 }
-
-resource "" "" {
-  elb      = ""
-  instance = ""
-}
