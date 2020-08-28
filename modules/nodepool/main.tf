@@ -75,8 +75,8 @@ resource "aws_autoscaling_group" "this" {
   max_size         = var.max
   desired_capacity = var.desired
 
-  health_check_type = "EC2"
-  target_group_arns = [data.aws_lb_target_group.controlplane.arn]
+  health_check_type = var.k3s_url == "" ? "EC2" : "ELB"
+  target_group_arns = var.k3s_url == "" ? [] : [data.aws_lb_target_group.controlplane.arn]
 
   dynamic "launch_template" {
     for_each = var.spot ? [] : ["spot"]
