@@ -30,7 +30,7 @@ data "template_cloudinit_config" "this" {
     content_type = "text/x-shellscript"
     content = templatefile("${path.module}/files/bootstrap.sh", {
       # Server if no k3s_url is specified
-      server = var.k3s_url == null ? true : false
+      is_server = var.k3s_url == null ? true : false
 
       # Server K3S Variables
       datastore_endpoint = var.k3s_datastore_endpoint

@@ -95,7 +95,7 @@ variable "k3s_url" {
 
 variable "k3s_tls_sans" {
   type    = list(string)
-  default = null
+  default = []
 }
 
 variable "k3s_datastore_endpoint" {
@@ -105,18 +105,18 @@ variable "k3s_datastore_endpoint" {
 
 variable "k3s_kubelet_args" {
   type        = list(string)
-  default     = null
+  default     = []
   description = "--kubelet-arg key=value"
 }
 
 variable "k3s_node_labels" {
   type        = list(string)
-  default     = null
+  default     = []
   description = "--node-label key=value"
 }
 
 variable "k3s_node_taints" {
   type        = list(string)
-  default     = null
+  default     = []
   description = "--node-taint key=value"
 }

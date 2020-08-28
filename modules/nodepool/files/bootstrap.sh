@@ -1,12 +1,12 @@
 #!/bin/bash
 provision() {
-  cat /usr/local/bin/install.sh | sh -s - %{ if server }server%{ else }agent%{ endif } \
+  cat /usr/local/bin/install.sh | sh -s - %{ if is_server }server%{ else }agent%{ endif } \
     --token "${token}" \
 %{ for arg in kubelet_args }--kubelet-arg "${arg}" %{ endfor } \
 %{ for arg in node_labels }--node-label "${arg}" %{ endfor } \
 %{ for arg in node_taints }--node-taint "${arg}" %{ endfor } \
 
-%{ if server ~}
+%{ if is_server ~}
     --datastore-endpoint "${datastore_endpoint}" \
 %{ for arg in tls_sans }--tls-san "${arg}" %{ endfor }
 
