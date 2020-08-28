@@ -18,7 +18,7 @@ output "lb_target_group_arn" {
 #
 # K3S Outputs
 #
-output "name" {
+output "cluster" {
   value = var.name
 }
 
