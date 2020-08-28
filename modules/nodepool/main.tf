@@ -5,11 +5,27 @@ locals {
   }, var.tags)
 }
 
+data "aws_vpc" "this" {
+  id = var.vpc_id
+}
+
 resource "aws_security_group" "this" {
   name_prefix = "${var.name}-k3s-nodepool"
   vpc_id      = var.vpc_id
   description = "${var.name} node pool"
   tags        = local.tags
+}
+
+resource "aws_security_group_rule" "server" {
+  count = var.k3s_url == "" ? 1 : 0
+
+  from_port         = 6443
+  to_port           = 6443
+  protocol          = "tcp"
+  security_group_id = aws_security_group.this.id
+  type              = "ingress"
+
+  cidr_blocks = [data.aws_vpc.this.cidr_block]
 }
 
 resource "aws_security_group_rule" "all_egress" {
@@ -78,8 +94,8 @@ resource "aws_autoscaling_group" "this" {
   desired_capacity = var.desired
 
   # Health check and target groups dependent on whether we're a server or not (identified via k3s_url)
-  health_check_type = var.k3s_url == "" ? "EC2" : "ELB"
-  target_group_arns = var.k3s_url == "" ? [] : [data.aws_lb_target_group.controlplane.arn]
+  health_check_type = var.k3s_url == "" ? "ELB" : "EC2"
+  target_group_arns = var.k3s_url == "" ? [data.aws_lb_target_group.controlplane.arn] : []
 
   dynamic "launch_template" {
     for_each = var.spot ? [] : ["spot"]
