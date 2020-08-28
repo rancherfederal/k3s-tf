@@ -1,10 +1,16 @@
 variable "name" {}
 
-variable "vpc_id" {}
+variable "vpc_id" {
+  default = null
+}
 
-variable "subnets" {}
+variable "subnets" {
+  default = null
+}
 
-variable "ami" {}
+variable "ami" {
+  default = null
+}
 
 variable "tags" {
   default = {}

@@ -35,13 +35,14 @@ variable "instance_type" {
 
 variable "pre_userdata" {
   type        = string
-  default     = ""
+  default     = null
   description = "base64 encoded custom userdata pre k3s boot"
 }
 
 variable "post_userdata" {
-  type    = string
-  default = "base64 encoded custom userdata post k3s boot"
+  type        = string
+  default     = null
+  description = "base64 encoded custom userdata post k3s boot"
 }
 
 variable "tags" {

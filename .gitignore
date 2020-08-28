@@ -1,6 +1,9 @@
 # IDEs
 .idea
 
+# Airgap testing
+k3s.bundle
+
 # Local .terraform directories
 **/.terraform/*
 

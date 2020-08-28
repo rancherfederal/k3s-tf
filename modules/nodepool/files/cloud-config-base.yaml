@@ -6,20 +6,11 @@ ssh_authorized_keys:
 %{ endfor }
 %{ endif }
 write_files:
-%{~ if aws_ccm != "" }
-- path: /var/lib/rancher/k3s/server/manifests/aws-ccm.yaml
+- path: /usr/local/bin/install.sh
   encoding: b64
-  content: ${aws_ccm}
+  content: ${k3s_install}
   owner: ec2-user:ec2-user
-  permissions: '0644'
-%{ endif }
-%{~ if aws_ebs != "" }
-- path: /var/lib/rancher/k3s/server/manifests/aws-ebs.yaml
-  encoding: b64
-  content: ${aws_ebs}
-  owner: ec2-user:ec2-user
-  permissions: '0644'
-%{~ endif }
+  permissions: '0755'
 %{~ for manifest in manifests }
 - path: /var/lib/rancher/k3s/server/manifests/${manifest.name}
   encoding: b64
