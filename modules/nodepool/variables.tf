@@ -28,6 +28,11 @@ variable "auto_deployed_manifests" {
   default = []
 }
 
+variable "extra_vpc_security_group_ids" {
+  type    = list(string)
+  default = null
+}
+
 variable "instance_type" {
   type    = string
   default = "t3.medium"
