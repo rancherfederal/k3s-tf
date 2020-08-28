@@ -14,8 +14,8 @@ module "k3s" {
 
   name = var.name
 
-  vpc_id  = var.vpc_id != null ? var.vpc_id : data.aws_vpc.default.id
-  subnets = var.subnets != null ? var.subnets : data.aws_subnet_ids.all.ids
+  vpc_id  = var.vpc_id
+  subnets = var.subnets
 
   tags = var.tags
 }
@@ -24,13 +24,13 @@ module "k3s" {
 module "servers" {
   source = "../../modules/nodepool"
 
-  vpc_id  = var.vpc_id != null ? var.vpc_id : data.aws_vpc.default.id
-  subnets = var.subnets != null ? var.subnets : data.aws_subnet_ids.all.ids
+  vpc_id  = var.vpc_id
+  subnets = var.subnets
 
   name    = "primary-servers"
   cluster = module.k3s.cluster
 
-  ami          = var.ami != null ? var.ami : data.aws_ami.rhel8.id
+  ami          = var.ami
   pre_userdata = local.pre_userdata
 
   tags = var.tags
@@ -40,13 +40,13 @@ module "servers" {
 module "generic_agents" {
   source = "../../modules/nodepool"
 
-  vpc_id  = var.vpc_id != null ? var.vpc_id : data.aws_vpc.default.id
-  subnets = var.subnets != null ? var.subnets : data.aws_subnet_ids.all.ids
+  vpc_id  = var.vpc_id
+  subnets = var.subnets
 
   name    = "generic-agents"
   cluster = module.k3s.cluster
 
-  ami          = var.ami != null ? var.ami : data.aws_ami.rhel8.id
+  ami          = var.ami
   pre_userdata = local.pre_userdata
 
   tags = var.tags
