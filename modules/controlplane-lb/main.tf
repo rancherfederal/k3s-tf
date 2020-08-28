@@ -18,8 +18,8 @@ resource "aws_elb" "this" {
     target              = "SSL:${var.port}"
     healthy_threshold   = var.healthy_threshold
     unhealthy_threshold = var.unhealthy_threshold
-    interval            = var.internal
-    timeout             = var.internal
+    interval            = var.interval
+    timeout             = var.timeout
   }
 
   tags = merge({
