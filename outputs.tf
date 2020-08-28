@@ -10,11 +10,6 @@ output "url" {
   value       = "https://${module.controlplane_lb.dns}:${module.controlplane_lb.port}"
 }
 
-output "lb_target_group_arn" {
-  description = "Load balancer target group arn used for attaching server nodes to the control plane network load balancer"
-  value       = module.controlplane_lb.targetgroup_arn
-}
-
 #
 # K3S Outputs
 #

@@ -3,5 +3,5 @@ output "dns" {
 }
 
 output "port" {
-  value = aws_elb.this.listener.lb_port
+  value = aws_elb.this.listener[0].lb_port
 }
