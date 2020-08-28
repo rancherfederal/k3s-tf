@@ -3,6 +3,7 @@
 
 # Airgap testing
 k3s.bundle
+*.zip
 
 # Local .terraform directories
 **/.terraform/*
