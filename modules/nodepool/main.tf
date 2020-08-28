@@ -76,7 +76,7 @@ resource "aws_autoscaling_group" "this" {
   desired_capacity = var.desired
 
   health_check_type = "EC2"
-  target_group_arns = data.aws_lb_target_group.controlplane.arn
+  target_group_arns = [data.aws_lb_target_group.controlplane.arn]
 
   dynamic "launch_template" {
     for_each = var.spot ? [] : ["spot"]
