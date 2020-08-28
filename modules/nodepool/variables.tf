@@ -82,3 +82,36 @@ variable "k3s_token" {
   type    = string
   default = null
 }
+
+variable "k3s_url" {
+  type    = string
+  default = null
+}
+
+variable "k3s_tls_sans" {
+  type    = list(string)
+  default = null
+}
+
+variable "k3s_datastore_endpoint" {
+  type    = string
+  default = null
+}
+
+variable "k3s_kubelet_args" {
+  type        = list(string)
+  default     = null
+  description = "--kubelet-arg key=value"
+}
+
+variable "k3s_node_labels" {
+  type        = list(string)
+  default     = null
+  description = "--node-label key=value"
+}
+
+variable "k3s_node_taints" {
+  type        = list(string)
+  default     = null
+  description = "--node-taint key=value"
+}

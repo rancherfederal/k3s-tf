@@ -29,7 +29,21 @@ data "template_cloudinit_config" "this" {
     filename     = "01_bootstrap.sh"
     content_type = "text/x-shellscript"
     content = templatefile("${path.module}/files/bootstrap.sh", {
+      # Server if no k3s_url is specified
+      server = var.k3s_url == null ? true : false
 
+      # Server K3S Variables
+      datastore_endpoint = var.k3s_datastore_endpoint
+      tls_sans           = var.k3s_tls_sans
+
+      # Agent K3S Variables
+      server = var.k3s_url
+
+      # Shared K3S Variables
+      token        = var.k3s_token
+      kubelet_args = var.k3s_kubelet_args
+      node_labels  = var.k3s_node_labels
+      node_taints  = var.k3s_node_taints
     })
   }
 

@@ -27,9 +27,8 @@ module "servers" {
   vpc_id  = var.vpc_id
   subnets = var.subnets
 
-  name    = "primary-servers"
-  cluster = module.k3s.cluster
-
+  name         = "primary-servers"
+  cluster      = module.k3s.cluster
   ami          = var.ami
   pre_userdata = local.pre_userdata
 
@@ -43,11 +42,13 @@ module "generic_agents" {
   vpc_id  = var.vpc_id
   subnets = var.subnets
 
-  name    = "generic-agents"
-  cluster = module.k3s.cluster
-
+  name         = "generic-agents"
+  cluster      = module.k3s.cluster
   ami          = var.ami
   pre_userdata = local.pre_userdata
+
+  k3s_token = module.k3s.token
+  k3s_url   = module.k3s.url
 
   tags = var.tags
 }

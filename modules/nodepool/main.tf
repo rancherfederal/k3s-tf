@@ -25,13 +25,17 @@ resource "aws_security_group_rule" "all_egress" {
 #
 # Launch template
 #
+data "aws_security_group" "shared" {
+  vpc_id = var.vpc_id
+  name   = "${var.cluster}-k3s-shared-sg"
+}
+
 resource "aws_launch_template" "this" {
-  name          = "${var.name}-k3s-nodepool"
-  image_id      = var.ami
-  instance_type = var.instance_type
-  user_data     = data.template_cloudinit_config.this.rendered
-  //  vpc_security_group_ids = concat([aws_security_group.this.id], var.extra_vpc_security_group_ids)
-  vpc_security_group_ids = [aws_security_group.this.id]
+  name                   = "${var.name}-k3s-nodepool"
+  image_id               = var.ami
+  instance_type          = var.instance_type
+  user_data              = data.template_cloudinit_config.this.rendered
+  vpc_security_group_ids = concat([aws_security_group.this.id], data.aws_security_group.shared.id, var.extra_vpc_security_group_ids)
 
   //  dynamic "block_device_mappings" {
   //    for_each = var.block_device_mappings
@@ -59,6 +63,10 @@ resource "aws_launch_template" "this" {
 #
 # Autoscaling group
 #
+data "aws_lb_target_group" "controlplane" {
+  name = "${var.cluster}-k3s-server-tg"
+}
+
 resource "aws_autoscaling_group" "this" {
   name                = "${var.name}-k3s-nodepool"
   vpc_zone_identifier = var.subnets
@@ -68,7 +76,7 @@ resource "aws_autoscaling_group" "this" {
   desired_capacity = var.desired
 
   health_check_type = "EC2"
-  //  target_group_arns = var.target_group_arns
+  target_group_arns = data.aws_lb_target_group.controlplane.arn
 
   dynamic "launch_template" {
     for_each = var.spot ? [] : ["spot"]
