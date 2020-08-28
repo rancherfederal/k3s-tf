@@ -18,6 +18,16 @@ variable "ami" {
   type = string
 }
 
+variable "ssh_authorized_keys" {
+  type    = list(string)
+  default = []
+}
+
+variable "auto_deployed_manifests" {
+  type    = list(string)
+  default = []
+}
+
 variable "instance_type" {
   type    = string
   default = "t3.medium"
@@ -26,12 +36,12 @@ variable "instance_type" {
 variable "pre_userdata" {
   type        = string
   default     = ""
-  description = "Custom userdata pre k3s boot"
+  description = "base64 encoded custom userdata pre k3s boot"
 }
 
 variable "post_userdata" {
   type    = string
-  default = "Custom userdata post k3s boot"
+  default = "base64 encoded custom userdata post k3s boot"
 }
 
 variable "tags" {

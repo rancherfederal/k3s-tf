@@ -1,0 +1,29 @@
+#cloud-config
+%{ if length(ssh_authorized_keys) > 0 }
+ssh_authorized_keys:
+%{ for key in ssh_authorized_keys }
+- ${key}
+%{ endfor }
+%{ endif }
+write_files:
+%{~ if aws_ccm != "" }
+- path: /var/lib/rancher/k3s/server/manifests/aws-ccm.yaml
+  encoding: b64
+  content: ${aws_ccm}
+  owner: ec2-user:ec2-user
+  permissions: '0644'
+%{ endif }
+%{~ if aws_ebs != "" }
+- path: /var/lib/rancher/k3s/server/manifests/aws-ebs.yaml
+  encoding: b64
+  content: ${aws_ebs}
+  owner: ec2-user:ec2-user
+  permissions: '0644'
+%{~ endif }
+%{~ for manifest in manifests }
+- path: /var/lib/rancher/k3s/server/manifests/${manifest.name}
+  encoding: b64
+  content: ${manifest.content}
+  owner: ec2-user:ec2-user
+  permissions: '0644'
+%{~ endfor }

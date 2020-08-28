@@ -1,12 +1,12 @@
 locals {
   tags = merge({
-    "Name"                                 = "${var.name}-node-pool",
+    "Name"                                 = "${var.name}-nodepool",
     "kubernetes.io/cluster/${var.cluster}" = "owned"
   }, var.tags)
 }
 
 resource "aws_security_group" "this" {
-  name_prefix = "${var.name}-node-pool"
+  name_prefix = "${var.name}-k3s-nodepool"
   vpc_id      = var.vpc_id
   description = "${var.name} node pool"
   tags        = local.tags
@@ -29,7 +29,7 @@ resource "aws_launch_template" "this" {
   name          = "${var.name}-k3s-nodepool"
   image_id      = var.ami
   instance_type = var.instance_type
-  //  user_data              = var.user_data != "" ? var.user_data : data.template_cloudinit_config.this.rendered
+  user_data     = data.template_cloudinit_config.this.rendered
   //  vpc_security_group_ids = concat([aws_security_group.this.id], var.extra_vpc_security_group_ids)
   vpc_security_group_ids = [aws_security_group.this.id]
 
