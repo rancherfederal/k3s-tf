@@ -20,7 +20,7 @@ resource "aws_elb" "this" {
   }
 
   health_check {
-    target              = "SSL:${var.port}"
+    target              = "TCP:${var.port}"
     healthy_threshold   = var.healthy_threshold
     unhealthy_threshold = var.unhealthy_threshold
     interval            = var.interval
