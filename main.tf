@@ -36,8 +36,8 @@ resource "aws_security_group" "shared" {
 }
 
 # TODO: Trim these down
-resource "aws_security_group_rule" "all-self" {
-  description       = "All traffic between nodes"
+resource "aws_security_group_rule" "all_self_ingress" {
+  description       = "Allow all ingress traffic between cluster nodes"
   from_port         = 0
   to_port           = 0
   protocol          = "-1"
@@ -45,4 +45,39 @@ resource "aws_security_group_rule" "all-self" {
   type              = "ingress"
 
   self = true
+}
+
+resource "aws_security_group_rule" "all_self_egress" {
+  description       = "Allow all egress traffic"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  security_group_id = aws_security_group.shared.id
+  type              = "egress"
+
+  cidr_blocks = ["0.0.0.0/0"]
+}
+
+#
+# Cluster Servers Shared Security Group
+#
+resource "aws_security_group" "shared_server" {
+  name        = "${var.name}-k3s-shared-server-sg"
+  vpc_id      = var.vpc_id
+  description = "Shared k3s server security group"
+
+  tags = merge({
+    "shared" = "true",
+  }, var.tags)
+}
+
+resource "aws_security_group_rule" "controlplane_ingress" {
+  description       = "All traffic between nodes"
+  from_port         = module.controlplane_lb.port
+  to_port           = module.controlplane_lb.port
+  protocol          = "tcp"
+  security_group_id = aws_security_group.shared.id
+  type              = "ingress"
+
+  cidr_blocks = [data.aws_vpc.this.cidr_block]
 }

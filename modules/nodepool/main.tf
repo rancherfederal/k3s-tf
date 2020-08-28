@@ -16,28 +16,6 @@ resource "aws_security_group" "this" {
   tags        = local.tags
 }
 
-resource "aws_security_group_rule" "server" {
-  count = var.k3s_url == "" ? 1 : 0
-
-  from_port         = 6443
-  to_port           = 6443
-  protocol          = "tcp"
-  security_group_id = aws_security_group.this.id
-  type              = "ingress"
-
-  cidr_blocks = [data.aws_vpc.this.cidr_block]
-}
-
-resource "aws_security_group_rule" "all_egress" {
-  description       = "Allow all egress traffic"
-  from_port         = 0
-  to_port           = 0
-  protocol          = "-1"
-  security_group_id = aws_security_group.this.id
-  type              = "egress"
-  cidr_blocks       = ["0.0.0.0/0"]
-}
-
 #
 # Launch template
 #
