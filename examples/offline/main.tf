@@ -59,3 +59,14 @@ module "generic_agents" {
 
   tags = var.tags
 }
+
+# NOTE: Nothing with the bootstrap process requires ssh, but for this example we open ssh on the server nodes for example purposes
+resource "aws_security_group_rule" "ssh" {
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  security_group_id = module.k3s.shared_security_group
+  type              = "ingress"
+
+  cidr_blocks = ["0.0.0.0/0"]
+}

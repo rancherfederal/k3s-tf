@@ -11,6 +11,17 @@ output "url" {
 }
 
 #
+# Shared Resource Outputs
+#
+output "shared_security_group" {
+  value = aws_security_group.shared.id
+}
+
+output "shared_server_security_group" {
+  value = aws_security_group.shared_server.id
+}
+
+#
 # K3S Outputs
 #
 output "cluster" {
