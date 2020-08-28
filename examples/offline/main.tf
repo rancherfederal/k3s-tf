@@ -34,12 +34,13 @@ module "servers" {
   iam_instance_profile = var.iam_instance_profile
   pre_userdata         = local.pre_userdata
 
-  k3s_token = module.k3s.token
+  k3s_token    = module.k3s.token
+  k3s_tls_sans = [module.k3s.tls_san]
 
   tags = var.tags
 }
 
-# Generic a gent nodepool
+# Generic agent nodepool
 module "generic_agents" {
   source     = "../../modules/nodepool"
   depends_on = [module.k3s]

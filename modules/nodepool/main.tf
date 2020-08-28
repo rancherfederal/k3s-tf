@@ -66,8 +66,8 @@ resource "aws_launch_template" "this" {
 #
 
 # NOTE: This will only get attached to the ASG if we're dealing with a server
-data "aws_lb_target_group" "controlplane" {
-  name = "${var.cluster}-k3s-server-tg"
+data "aws_lb" "controlplane" {
+  name = "${var.cluster}-k3s-controlplane"
 }
 
 resource "aws_autoscaling_group" "this" {
@@ -80,7 +80,7 @@ resource "aws_autoscaling_group" "this" {
 
   # Health check and target groups dependent on whether we're a server or not (identified via k3s_url)
   health_check_type = var.k3s_url == "" ? "ELB" : "EC2"
-  target_group_arns = var.k3s_url == "" ? [data.aws_lb_target_group.controlplane.arn] : []
+  load_balancers    = var.k3s_url == "" ? [data.aws_lb.controlplane.name] : []
 
   dynamic "launch_template" {
     for_each = var.spot ? [] : ["spot"]
