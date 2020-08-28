@@ -32,6 +32,8 @@ module "servers" {
   ami          = var.ami
   pre_userdata = local.pre_userdata
 
+  k3s_token = module.k3s.token
+
   tags = var.tags
 }
 
