@@ -3,9 +3,9 @@ output "dns" {
 }
 
 output "port" {
-  value = aws_lb_target_group.server_6443.port
+  value = aws_lb_target_group.server.port
 }
 
 output "targetgroup_arn" {
-  value = aws_lb_target_group.server_6443.arn
+  value = aws_lb_target_group.server.arn
 }

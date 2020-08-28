@@ -10,18 +10,18 @@ resource "aws_lb" "this" {
   }, var.tags)
 }
 
-resource "aws_lb_listener" "server_port_6443" {
+resource "aws_lb_listener" "server" {
   load_balancer_arn = aws_lb.this.arn
   port              = var.port
   protocol          = "TCP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.server_6443.arn
+    target_group_arn = aws_lb_target_group.server.arn
   }
 }
 
-resource "aws_lb_target_group" "server_6443" {
+resource "aws_lb_target_group" "server" {
   name     = "${var.name}-k3s-server-tg"
   port     = var.port
   protocol = "TCP"
