@@ -8,7 +8,7 @@ locals {
 }
 
 resource "aws_security_group" "this" {
-  name_prefix = "${var.name}-k3s-nodepool"
+  name        = "${var.name}-k3s-nodepool"
   vpc_id      = var.vpc_id
   description = "${var.name} node pool"
   tags        = local.tags
