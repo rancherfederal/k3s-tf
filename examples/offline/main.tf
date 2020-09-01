@@ -50,28 +50,31 @@ module "servers" {
 }
 
 # Generic agent nodepool
-//module "generic_agents" {
-//  source     = "../../modules/nodepool"
-//  depends_on = [module.k3s]
-//
-//  vpc_id  = var.vpc_id
-//  subnets = var.subnets
-//
-//  name                 = "generic-agents"
-//  cluster              = module.k3s.cluster
-//  ami                  = var.ami
-//  iam_instance_profile = var.iam_instance_profile
-//  spot                 = true
-//  pre_userdata         = local.pre_userdata
-//  min                  = 1
-//  max                  = 3
-//  desired              = 2
-//
-//  k3s_token = module.k3s.token
-//  k3s_url   = module.k3s.url
-//
-//  tags = var.tags
-//}
+module "generic_agents" {
+  source = "../../modules/nodepool"
+
+  # Node Variables
+  name                 = "generic-agents"
+  vpc_id               = var.vpc_id
+  subnets              = var.subnets
+  ami                  = var.ami
+  ssh_authorized_keys  = var.public_keys
+  iam_instance_profile = var.iam_instance_profile
+  asg                  = { min : 1, max : 2, desired : 1 }
+
+  # Cluster Variables
+  cluster                = module.k3s.cluster
+  cluster_security_group = module.k3s.cluster_security_group
+  state_bucket           = module.k3s.state_bucket
+
+  dependencies_script = local.download_dependencies
+
+  # K3S Variables
+  k3s_node_labels = ["type=generic-agent"]
+  k3s_url         = module.k3s.url
+
+  tags = var.tags
+}
 
 # NOTE: Nothing with the bootstrap process requires ssh, but for this example we open ssh on the server nodes for example purposes
 resource "aws_security_group_rule" "ssh" {
