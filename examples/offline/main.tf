@@ -36,7 +36,9 @@ module "servers" {
   controlplane_loadbalancer = module.k3s.controlplane_loadbalancer
   state_bucket              = module.k3s.state_bucket
 
-  //  rancher_rpm_repo_baseurl = "s3://rancher-migration-bucket/rancher-airgap"
+  rancher_rpm_repo_baseurl = var.rancher_rpm_repo_baseurl
+  aws_download_url         = var.aws_download_url
+
 
   # K3S Variables
   k3s_tls_sans    = [module.k3s.tls_san]

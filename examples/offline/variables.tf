@@ -23,6 +23,14 @@ variable "rds_ca_cert_identifier" {
   default = "rds-ca-2017"
 }
 
+variable "rancher_rpm_repo_baseurl" {
+  type = string
+}
+
+variable "aws_download_url" {
+  type = string
+}
+
 variable "state_bucket" {
   type = string
 }
