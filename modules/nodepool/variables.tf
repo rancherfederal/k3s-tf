@@ -1,26 +1,32 @@
 variable "name" {
-  type = string
+  type        = string
+  description = "Name of the node pool, to be appended to all resources"
 }
 
 variable "cluster" {
-  type = string
+  type        = string
+  description = "Name of the cluster the nodepool belongs to, sourced from k3s module"
 }
 
 variable "vpc_id" {
-  type = string
+  type        = string
+  description = "VPC ID the nodepool is deployed to"
 }
 
 variable "subnets" {
-  type = list(string)
+  type        = list(string)
+  description = "List of subnet ids the nodepool is deployed to"
 }
 
 variable "ami" {
-  type = string
+  type        = string
+  description = "AMI of all EC2 instances within the nodepool"
 }
 
 variable "ssh_authorized_keys" {
-  type    = list(string)
-  default = []
+  type        = list(string)
+  default     = []
+  description = "List of public keys that are added to nodes authorized hosts.  This is not required for cluster bootstrap, and should only be allowed for development environments where ssh access is beneficial"
 }
 
 variable "auto_deployed_manifests" {
@@ -38,18 +44,6 @@ variable "instance_type" {
   default = "t3.medium"
 }
 
-variable "pre_userdata" {
-  type        = string
-  default     = null
-  description = "base64 encoded custom userdata pre k3s boot"
-}
-
-variable "post_userdata" {
-  type        = string
-  default     = null
-  description = "base64 encoded custom userdata post k3s boot"
-}
-
 variable "tags" {
   type    = map(string)
   default = {}
@@ -63,6 +57,22 @@ variable "iam_instance_profile" {
 variable "spot" {
   type    = bool
   default = false
+}
+
+variable "block_device_mappings" {
+  type = object({
+    name                  = string
+    volume_size           = number
+    encrypted             = bool
+    delete_on_termination = bool
+  })
+
+  default = {
+    name                  = "/dev/sda1"
+    size                  = 32
+    encrypted             = true
+    delete_on_termination = true
+  }
 }
 
 variable "asg" {

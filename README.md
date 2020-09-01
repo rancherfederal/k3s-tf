@@ -13,4 +13,32 @@ This repo is tailored to deploy on all AWS regions, and uses only the cloud serv
 * Classic Load Balancers (C2S compatibility)
 * S3 (C2S compatibility)
 
-TODO: More docs on architecture, inputs, etc...
+TODO: More docs on architecture, inputs, etc...## Requirements
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| name | Name of the cluster, will be prepended to cluster resources | `string` | n/a | yes |
+| subnets | List of subnet ids of the shared cluster resources such as load balancers and RDS.  Generally set to private subnets | `list(string)` | n/a | yes |
+| vpc\_id | VPC ID of the cluster | `string` | n/a | yes |
+| rds\_ca\_cert\_identifier | RDS CA Certificate Identifier | `string` | `"rds-ca-2017"` | no |
+| state\_bucket | Name of existing S3 bucket to store cluster state/secrets in, will create bucket if left blank | `string` | `null` | no |
+| tags | Common tags to attach to all created resources | `map(string)` | `{}` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| cluster | Name of the cluster to be passed into all node pools |
+| cluster\_security\_group | Shared cluster security group required to be passed into all node pools |
+| controlplane\_loadbalancer | Name of the controlplane load balancer |
+| datastore\_endpoint | Formatted output for k3s --datastore-endpoint.  This is output for verbosity and does not need to be passed into node pools, it will be fetched from the cluster state bucket on node boot |
+| shared\_agent\_security\_group | Shared agent security group optional to be passed into all agent node pools |
+| shared\_server\_security\_group | Shared server security group required to be passed into all server node pools |
+| state\_bucket | Name of the bucket used to store k3s cluster state, required to be passed in to node pools |
+| state\_key | Name of the state object used to store k3s cluster state |
+| tls\_san | DNS of the control plane load balancer, used for passing --tls-san to server nodepools |
+| token | Token used for k3s --token registration, added for brevity, does not need to be passed to module, it is loaded via S3 state bucket |
+| url | Formatted load balancer url used for --server on agent node pools |
+
