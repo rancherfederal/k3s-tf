@@ -28,7 +28,7 @@ variable "auto_deployed_manifests" {
   default = []
 }
 
-variable "extra_vpc_security_group_ids" {
+variable "extra_security_groups" {
   type    = list(string)
   default = []
 }
@@ -65,27 +65,62 @@ variable "spot" {
   default = false
 }
 
-variable "min" {
-  type    = number
-  default = 2
+variable "asg" {
+  type = object({
+    min     = number
+    max     = number
+    desired = number
+  })
+
+  default = {
+    min     = 1
+    max     = 2
+    desired = 1
+  }
+
+  description = "Autoscaling group scale, requires min, max, and desired"
 }
 
-variable "max" {
-  type    = number
-  default = 3
+variable "controlplane_loadbalancer" {
+  type    = string
+  default = null
 }
 
-variable "desired" {
-  type    = number
-  default = 2
+variable "cluster_security_group" {
+  type = string
+}
+
+variable "shared_server_security_group" {
+  type    = string
+  default = null
+}
+
+variable "shared_agent_security_group" {
+  type    = string
+  default = null
+}
+
+variable "enable_cloud_provider" {
+  type    = bool
+  default = true
+}
+
+variable "state_bucket" {
+  type    = string
+  default = null
+}
+
+variable "state_key" {
+  type    = string
+  default = "state.env"
 }
 
 #
 # K3S  Variables
 #
-variable "k3s_token" {
+variable "k3s_version" {
   type    = string
-  default = ""
+  default = "v1.18.8+k3s1"
 }
 
 variable "k3s_url" {
@@ -93,20 +128,45 @@ variable "k3s_url" {
   default = ""
 }
 
+variable "k3s_disables" {
+  type        = list(string)
+  default     = ["traefik", "local-storage", "servicelb"]
+  description = "k3s services to disable, defaults to traefik, local-storage, and servicelb since we're in the cloud"
+}
+
 variable "k3s_tls_sans" {
   type    = list(string)
   default = []
-}
-
-variable "k3s_datastore_endpoint" {
-  type    = string
-  default = "'"
 }
 
 variable "k3s_kubelet_args" {
   type        = list(string)
   default     = []
   description = "--kubelet-arg key=value"
+}
+
+variable "k3s_kube_apiservers" {
+  type        = list(string)
+  default     = []
+  description = "--kube-apiserver-arg key=value"
+}
+
+variable "k3s_kube_schedulers" {
+  type        = list(string)
+  default     = []
+  description = "--kube-scheduler-arg key=value"
+}
+
+variable "k3s_kube_controller_managers" {
+  type        = list(string)
+  default     = []
+  description = "--kube-controller-manager-arg key=value"
+}
+
+variable "k3s_kube_cloud_controller_managers" {
+  type        = list(string)
+  default     = []
+  description = "--kube-cloud-controller-manager-arg key=value"
 }
 
 variable "k3s_node_labels" {
@@ -119,4 +179,23 @@ variable "k3s_node_taints" {
   type        = list(string)
   default     = []
   description = "--node-taint key=value"
+}
+
+#
+# Download urls for dependencies
+#   Used for external dependencies that need to be pulled on boot (extremely minimal amount of dependencies)
+#
+variable "k3s_download_url" {
+  type    = string
+  default = "https://github.com/rancher/k3s/releases/download"
+}
+
+variable "rancher_rpm_repo_baseurl" {
+  type    = string
+  default = "https://rpm.rancher.io"
+}
+
+variable "aws_download_url" {
+  type    = string
+  default = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
 }

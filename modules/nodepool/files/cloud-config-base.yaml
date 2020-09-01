@@ -5,16 +5,44 @@ ssh_authorized_keys:
 - ${key}
 %{ endfor }
 %{ endif }
+yum_repos:
+  rancher:
+    baseurl: ${rpm_repo_baseurl}
+    enabled: true
+    failovermethod: priority
+    gpgcheck: true
+    gpgkey: ${rpm_repo_baseurl}/public.key
+    name: Rancher
 write_files:
-- path: /usr/local/bin/install.sh
-  encoding: b64
-  content: ${k3s_install}
-  owner: ec2-user:ec2-user
+- path: /var/lib/rancher/k3s/server/manifests/aws-ccm.yaml
+  encoding: gz+b64
+  content: "${ccm}"
+  owner: root:root
+  permissions: '0644'
+- path: /var/lib/rancher/k3s/server/manifests/aws-ebs.yaml
+  encoding: gz+b64
+  content: "${ebs}"
+  owner: root:root
+  permissions: '0644'
+- path: /usr/local/bin/nodedrain.sh
+  encoding: gz+b64
+  content: "${nodedrain}"
+  owner: root:root
   permissions: '0755'
-%{~ for manifest in manifests }
+- path: /etc/systemd/system/nodedrain.service
+  encoding: gz+b64
+  content: "${nodedrain_service}"
+  owner: root:root
+  permissions: '0644'
+- path: /usr/local/bin/k3s.sh
+  encoding: gz+b64
+  content: "${k3s_install}"
+  owner: root:root
+  permissions: '0755'
+%{ for manifest in manifests }
 - path: /var/lib/rancher/k3s/server/manifests/${manifest.name}
   encoding: b64
   content: ${manifest.content}
   owner: ec2-user:ec2-user
   permissions: '0644'
-%{~ endfor }
+%{ endfor }

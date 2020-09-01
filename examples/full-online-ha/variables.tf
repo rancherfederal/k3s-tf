@@ -3,16 +3,9 @@ variable "name" {
   default = "k3s-ha"
 }
 
-variable "vpc_id" {
-  type = string
-}
-
-variable "subnets" {
-  type = list(string)
-}
-
-variable "ami" {
-  default = "ami-02354e95b39ca8dec"
+variable "ssh_authorized_keys" {
+  type    = list(string)
+  default = []
 }
 
 variable "tags" {

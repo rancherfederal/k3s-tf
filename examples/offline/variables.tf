@@ -19,11 +19,8 @@ variable "iam_instance_profile" {
   default = ""
 }
 
-variable "fileserver_url" {
+variable "state_bucket" {
   type = string
-
-  # In practice, this is replaced with the airgapped file server
-  default = "https://github.com/rancher/k3s/releases/download/v1.18.8%2Bk3s1"
 }
 
 variable "tags" {

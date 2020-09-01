@@ -1,10 +1,10 @@
 locals {
+  is_server = var.k3s_url == "" ? true : false
+
   tags = merge({
     "Name"                                 = "${var.name}-nodepool",
     "kubernetes.io/cluster/${var.cluster}" = "owned"
   }, var.tags)
-
-  shared_sgs = var.k3s_url == "" ? [data.aws_security_group.shared.id, data.aws_security_group.shared_server.id] : [data.aws_security_group.shared.id]
 }
 
 resource "aws_security_group" "this" {
@@ -17,22 +17,12 @@ resource "aws_security_group" "this" {
 #
 # Launch template
 #
-data "aws_security_group" "shared" {
-  vpc_id = var.vpc_id
-  name   = "${var.cluster}-k3s-shared-sg"
-}
-
-data "aws_security_group" "shared_server" {
-  vpc_id = var.vpc_id
-  name   = "${var.cluster}-k3s-shared-server-sg"
-}
-
 resource "aws_launch_template" "this" {
   name                   = "${var.name}-k3s-nodepool"
   image_id               = var.ami
   instance_type          = var.instance_type
   user_data              = data.template_cloudinit_config.this.rendered
-  vpc_security_group_ids = concat([aws_security_group.this.id], local.shared_sgs, var.extra_vpc_security_group_ids)
+  vpc_security_group_ids = concat([aws_security_group.this.id], [var.cluster_security_group], var.extra_security_groups)
 
   //  dynamic "block_device_mappings" {
   //    for_each = var.block_device_mappings
@@ -60,23 +50,17 @@ resource "aws_launch_template" "this" {
 #
 # Autoscaling group
 #
-
-# NOTE: This will only get attached to the ASG if we're dealing with a server
-data "aws_elb" "controlplane" {
-  name = "${var.cluster}-k3s-controlplane"
-}
-
 resource "aws_autoscaling_group" "this" {
   name                = "${var.name}-k3s-nodepool"
   vpc_zone_identifier = var.subnets
 
-  min_size         = var.min
-  max_size         = var.max
-  desired_capacity = var.desired
+  min_size         = var.asg.min
+  max_size         = var.asg.max
+  desired_capacity = var.asg.desired
 
   # Health check and target groups dependent on whether we're a server or not (identified via k3s_url)
-  health_check_type = var.k3s_url == "" ? "ELB" : "EC2"
-  load_balancers    = var.k3s_url == "" ? [data.aws_elb.controlplane.name] : []
+  health_check_type = local.is_server ? "ELB" : "EC2"
+  load_balancers    = local.is_server ? [var.controlplane_loadbalancer] : []
 
   dynamic "launch_template" {
     for_each = var.spot ? [] : ["spot"]
