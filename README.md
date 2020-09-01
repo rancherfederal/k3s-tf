@@ -15,6 +15,13 @@ This repo is tailored to deploy on all AWS regions, and uses only the cloud serv
 
 TODO: More docs on architecture, inputs, etc...## Requirements
 
+## Examples
+
+Examples are provided in the `examples/` directory for common use cases:
+
+* `full-ha`: Zero to hero full environment + cluster.  Will create network (vpc, subnets, etc...) resources and HA cluster in an online environment.  This is default use case and is tested against commercial and govcloud AWS.
+* `offline`: Restricted privilage airgapped cluster.  Will use existing resources to deploy cluster in an entirely airgapped environment.  This is tested against C2S.
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
