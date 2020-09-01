@@ -18,20 +18,22 @@ module "servers" {
   source = "../../modules/nodepool"
 
   # Node variables
+  name                 = "primary-servers"
   vpc_id               = var.vpc_id
   subnets              = var.subnets
-  cluster              = module.k3s.cluster
   ami                  = var.ami
+  ssh_authorized_keys  = var.public_keys
   iam_instance_profile = var.iam_instance_profile
+  asg                  = { min : 1, max : 3, desired : 2 }
 
   # Cluster variables
-  name                      = "primary-servers"
+  cluster                   = module.k3s.cluster
   cluster_security_group    = module.k3s.cluster_security_group
   extra_security_groups     = [module.k3s.shared_server_security_group]
   controlplane_loadbalancer = module.k3s.controlplane_loadbalancer
   state_bucket              = var.state_bucket
 
-  rancher_rpm_repo_baseurl = "s3://rancher-migration-bucket/rancher-airgap"
+  //  rancher_rpm_repo_baseurl = "s3://rancher-migration-bucket/rancher-airgap"
 
   # K3S Variables
   k3s_tls_sans    = [module.k3s.tls_san]

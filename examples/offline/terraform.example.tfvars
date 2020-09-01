@@ -1,2 +1,1 @@
-name = "ha-offline"
-
+name = "k3s-offline"
