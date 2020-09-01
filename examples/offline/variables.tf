@@ -31,6 +31,10 @@ variable "aws_download_url" {
   type = string
 }
 
+variable "k3s_download_url" {
+  type = string
+}
+
 variable "state_bucket" {
   type = string
 }

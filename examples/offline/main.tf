@@ -38,6 +38,7 @@ module "servers" {
 
   rancher_rpm_repo_baseurl = var.rancher_rpm_repo_baseurl
   aws_download_url         = var.aws_download_url
+  k3s_download_url         = var.k3s_download_url
 
 
   # K3S Variables
