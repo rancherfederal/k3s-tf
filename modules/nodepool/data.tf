@@ -37,7 +37,7 @@ data "template_cloudinit_config" "this" {
     filename     = "01_aws.sh"
     content_type = "text/x-shellscript"
     content = templatefile("${path.module}/files/aws.sh", {
-      aws_download_url = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+      aws_download_url = var.aws_download_url
     })
   }
 

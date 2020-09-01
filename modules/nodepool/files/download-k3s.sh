@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eu
 
 K3S_DOWNLOAD_URL="${k3s_download_url}"
 K3S_VERSION="${k3s_version}"

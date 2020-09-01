@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eu
 
 # AWS CLI
 curl -sL "${aws_download_url}" -o /tmp/awscliv2.zip && unzip -qq -d /tmp /tmp/awscliv2.zip && /tmp/aws/install

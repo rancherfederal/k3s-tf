@@ -10,8 +10,8 @@ yum_repos:
     baseurl: ${rpm_repo_baseurl}
     enabled: true
     failovermethod: priority
-    gpgcheck: true
-    gpgkey: ${rpm_repo_baseurl}/public.key
+    gpgcheck: false
+#    gpgkey: ${rpm_repo_baseurl}/public.key
     name: Rancher
 write_files:
 - path: /var/lib/rancher/k3s/server/manifests/aws-ccm.yaml
