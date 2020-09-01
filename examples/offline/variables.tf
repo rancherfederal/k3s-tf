@@ -19,6 +19,10 @@ variable "iam_instance_profile" {
   default = ""
 }
 
+variable "rds_ca_cert_identifier" {
+  default = "rds-ca-2017"
+}
+
 variable "state_bucket" {
   type = string
 }

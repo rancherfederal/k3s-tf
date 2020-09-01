@@ -38,6 +38,8 @@ module "db" {
   subnets  = var.subnets
   password = random_password.db.result
 
+  ca_cert_identifier = var.rds_ca_cert_identifier
+
   tags = var.tags
 }
 

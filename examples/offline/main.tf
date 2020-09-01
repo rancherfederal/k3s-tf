@@ -11,6 +11,8 @@ module "k3s" {
   subnets      = var.subnets
   state_bucket = var.state_bucket
 
+  rds_ca_cert_identifier = var.rds_ca_cert_identifier
+
   tags = var.tags
 }
 

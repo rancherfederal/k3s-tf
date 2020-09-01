@@ -15,6 +15,11 @@ variable "state_bucket" {
   default = null
 }
 
+variable "rds_ca_cert_identifier" {
+  type    = string
+  default = "rds-ca-2017"
+}
+
 variable "tags" {
   type    = map(string)
   default = {}
