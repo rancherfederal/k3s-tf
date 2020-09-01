@@ -1,23 +1,16 @@
 # k3s-tf
-Terraform IAC for K3S on AWS
 
-## TODO
+__Warning__: This repo is still a WIP.  While it contains ready deployments, many of the components are still subject to change.
 
-* better `modules/nodepool/files/bootstrap.sh`
-  * CIS benchmark node configuration
-  * selinux
-  * more k3s options?
-  * rds CA pem
-* ha server with datastore (waiting for permissions)
-* external ccm/aws-ebs-csi-driver
-* registry mirroring inputs/settings
-* docs for [caddy](https://caddyserver.com/docs/quick-starts/static-files) file server
+Terraform IAC for HA K3S on Commercial, GovCloud, or (T)C2S AWS regions.
 
-### `k3ama` / airgap assumptions
+Since k3s doesn't enforce an installation approach, there are many approaches to cluster bootstrapping.  This repository demonstrates _one_ of the many ways to go from 0 to infrastructure + HA cluster in just a few minutes.  
 
-The following important assumptions are made which make ssh-less bootstrapping and immutable clusters possible:
+This repo is tailored to deploy on all AWS regions, and uses only the cloud services that exist on all environments.  As such, the following services are required:
 
-* `k3s` dependencies (just the k3s binary) can be fetched from somewhere accessible by the agents and servers (configurable)
-* a registry accessible from servers and agents is accessible with the required images preloaded
+* Autoscaling Groups
+* RDS MySQL
+* Classic Load Balancers (C2S compatibility)
+* S3 (C2S compatibility)
 
-Thankfully, by it's very nature, k3s makes setting this up _extremely_ simple.  Please see [`k3ama`](https://github.com/rancherfederal/k3ama) to get started.
+TODO: More docs on architecture, inputs, etc...
