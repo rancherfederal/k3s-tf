@@ -7,8 +7,9 @@ module "k3s" {
 
   name = var.name
 
-  vpc_id  = var.vpc_id
-  subnets = var.subnets
+  vpc_id       = var.vpc_id
+  subnets      = var.subnets
+  state_bucket = var.state_bucket
 
   tags = var.tags
 }
@@ -31,7 +32,7 @@ module "servers" {
   cluster_security_group    = module.k3s.cluster_security_group
   extra_security_groups     = [module.k3s.shared_server_security_group]
   controlplane_loadbalancer = module.k3s.controlplane_loadbalancer
-  state_bucket              = var.state_bucket
+  state_bucket              = module.k3s.state_bucket
 
   //  rancher_rpm_repo_baseurl = "s3://rancher-migration-bucket/rancher-airgap"
 
