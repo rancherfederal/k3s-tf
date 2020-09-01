@@ -23,6 +23,11 @@ variable "state_bucket" {
   type = string
 }
 
+variable "public_keys" {
+  type    = list(string)
+  default = []
+}
+
 variable "tags" {
   default = {}
 }
