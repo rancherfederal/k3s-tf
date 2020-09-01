@@ -23,16 +23,9 @@ variable "rds_ca_cert_identifier" {
   default = "rds-ca-2017"
 }
 
-variable "rancher_rpm_repo_baseurl" {
-  type = string
-}
-
-variable "aws_download_url" {
-  type = string
-}
-
-variable "k3s_download_url" {
-  type = string
+variable "download_dependencies" {
+  type    = string
+  default = "../../modules/nodepool/files/download_dependencies.sh"
 }
 
 variable "state_bucket" {

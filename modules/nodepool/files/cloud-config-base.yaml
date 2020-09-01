@@ -5,14 +5,6 @@ ssh_authorized_keys:
 - ${key}
 %{ endfor }
 %{ endif }
-yum_repos:
-  rancher:
-    baseurl: ${rpm_repo_baseurl}
-    enabled: true
-    failovermethod: priority
-    gpgcheck: false
-#    gpgkey: ${rpm_repo_baseurl}/public.key
-    name: Rancher
 write_files:
 - path: /var/lib/rancher/k3s/server/manifests/aws-ccm.yaml
   encoding: gz+b64

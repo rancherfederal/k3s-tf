@@ -13,8 +13,6 @@ data "template_cloudinit_config" "this" {
       ccm               = var.enable_cloud_provider ? base64gzip(file("${path.module}/files/aws-ccm.yaml")) : ""
       ebs               = var.enable_cloud_provider ? base64gzip(file("${path.module}/files/aws-ebs.yaml")) : ""
 
-      rpm_repo_baseurl = var.rancher_rpm_repo_baseurl
-
       ssh_authorized_keys = var.ssh_authorized_keys
 
       # Manifests to autodeploy on boot
@@ -24,26 +22,16 @@ data "template_cloudinit_config" "this" {
 
   # downloader (NOTE: In a production deployment, this is usually replaced by custom AMIs)
   part {
-    filename     = "00_download_k3s.sh"
+    filename     = "00_download_dependencies.sh"
     content_type = "text/x-shellscript"
-    content = templatefile("${path.module}/files/download-k3s.sh", {
-      k3s_download_url = var.k3s_download_url
-      k3s_version      = var.k3s_version
-    })
-  }
-
-  # aws specific inits
-  part {
-    filename     = "01_aws.sh"
-    content_type = "text/x-shellscript"
-    content = templatefile("${path.module}/files/aws.sh", {
-      aws_download_url = var.aws_download_url
+    content = var.dependencies_script != null ? var.dependencies_script : templatefile("${path.module}/files/download_dependencies.sh", {
+      k3s_version = var.k3s_version
     })
   }
 
   # secrets fetcher script
   part {
-    filename     = "02_secrets.sh"
+    filename     = "01_secrets.sh"
     content_type = "text/x-shellscript"
     content = templatefile("${path.module}/files/secrets.sh", {
       state_bucket = var.state_bucket
@@ -53,7 +41,7 @@ data "template_cloudinit_config" "this" {
 
   # k3s bootstrap script
   part {
-    filename     = "03_bootstrap.sh"
+    filename     = "02_bootstrap.sh"
     content_type = "text/x-shellscript"
     content = templatefile("${path.module}/files/bootstrap.sh", {
       state_bucket = var.state_bucket

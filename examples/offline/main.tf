@@ -2,6 +2,10 @@ provider "aws" {
   version = "~> 3.0"
 }
 
+locals {
+  download_dependencies = file(var.download_dependencies)
+}
+
 module "k3s" {
   source = "../../"
 
@@ -36,10 +40,7 @@ module "servers" {
   controlplane_loadbalancer = module.k3s.controlplane_loadbalancer
   state_bucket              = module.k3s.state_bucket
 
-  rancher_rpm_repo_baseurl = var.rancher_rpm_repo_baseurl
-  aws_download_url         = var.aws_download_url
-  k3s_download_url         = var.k3s_download_url
-
+  dependencies_script = local.download_dependencies
 
   # K3S Variables
   k3s_tls_sans    = [module.k3s.tls_san]

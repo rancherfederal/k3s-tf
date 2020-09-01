@@ -185,17 +185,8 @@ variable "k3s_node_taints" {
 # Download urls for dependencies
 #   Used for external dependencies that need to be pulled on boot (extremely minimal amount of dependencies)
 #
-variable "k3s_download_url" {
-  type    = string
-  default = "https://github.com/rancher/k3s/releases/download"
-}
-
-variable "rancher_rpm_repo_baseurl" {
-  type    = string
-  default = "https://rpm.rancher.io"
-}
-
-variable "aws_download_url" {
-  type    = string
-  default = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+variable "dependencies_script" {
+  type        = string
+  default     = null
+  description = "Dependencies script responsible for any pre-node setup, overriding this overrides the default setup and requires AT LEAST the k3s binary and aws cli downloaded before proceeding"
 }
