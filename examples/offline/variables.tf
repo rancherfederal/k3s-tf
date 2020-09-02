@@ -19,6 +19,10 @@ variable "iam_instance_profile" {
   default = ""
 }
 
+variable "k3s_registries" {
+  default = ""
+}
+
 variable "rds_ca_cert_identifier" {
   default = "rds-ca-2017"
 }

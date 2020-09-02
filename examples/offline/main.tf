@@ -43,6 +43,7 @@ module "servers" {
   dependencies_script = local.download_dependencies
 
   # K3S Variables
+  k3s_registries  = var.k3s_registries
   k3s_tls_sans    = [module.k3s.tls_san]
   k3s_node_labels = ["type=primary-server"]
 
@@ -70,6 +71,7 @@ module "generic_agents" {
   dependencies_script = local.download_dependencies
 
   # K3S Variables
+  k3s_registries  = var.k3s_registries
   k3s_node_labels = ["type=generic-agent"]
   k3s_url         = module.k3s.url
 

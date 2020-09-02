@@ -21,6 +21,9 @@ data "template_cloudinit_config" "this" {
 
       # Manifests to autodeploy on boot
       manifests = local.gzip_manifests
+
+      # Registry mirroring setup: see https://rancher.com/docs/k3s/latest/en/installation/private-registry/
+      registries = base64gzip(var.k3s_registries)
     })
   }
 

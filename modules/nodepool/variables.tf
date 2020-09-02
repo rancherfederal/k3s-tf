@@ -190,6 +190,12 @@ variable "k3s_node_taints" {
   description = "--node-taint key=value"
 }
 
+variable "k3s_registries" {
+  type        = string
+  default     = ""
+  description = "k3s registries.yaml to define registry configuration, see https://rancher.com/docs/k3s/latest/en/installation/private-registry/"
+}
+
 #
 # Download urls for dependencies
 #   Used for external dependencies that need to be pulled on boot (extremely minimal amount of dependencies)
