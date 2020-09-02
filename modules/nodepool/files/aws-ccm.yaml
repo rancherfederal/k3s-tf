@@ -113,6 +113,14 @@ subjects:
     name: cloud-controller-manager
     namespace: kube-system
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloud-config
+  namespace: kube-system
+data:
+  cloud.conf: |
+---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -146,7 +154,17 @@ spec:
           args:
             - --v=2
             - --cloud-provider=aws
+            - --cloud-config
+            - /var/lib/k3s/cloud.conf
           resources:
             requests:
               cpu: 200m
+          volumeMounts:
+            - mountPath: "/var/lib/k3s"
+              name: config
+              readOnly: true
       hostNetwork: true
+      volumes:
+        - name: cloud-config
+          configMap:
+            name: cloud-config
