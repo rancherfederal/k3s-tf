@@ -30,7 +30,10 @@ variable "ssh_authorized_keys" {
 }
 
 variable "auto_deployed_manifests" {
-  type    = list(string)
+  type = list(object({
+    name    = string
+    content = string
+  }))
   default = []
 }
 

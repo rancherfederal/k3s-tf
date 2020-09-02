@@ -1,3 +1,7 @@
+locals {
+  gzip_manifests = [for manifest in var.auto_deployed_manifests : { name : manifest.name, content : base64gzip(manifest.content) }]
+}
+
 data "template_cloudinit_config" "this" {
   gzip          = true
   base64_encode = true
@@ -16,7 +20,7 @@ data "template_cloudinit_config" "this" {
       ssh_authorized_keys = var.ssh_authorized_keys
 
       # Manifests to autodeploy on boot
-      manifests = var.auto_deployed_manifests
+      manifests = local.gzip_manifests
     })
   }
 

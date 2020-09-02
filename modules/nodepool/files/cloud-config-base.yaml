@@ -33,8 +33,8 @@ write_files:
   permissions: '0755'
 %{ for manifest in manifests }
 - path: /var/lib/rancher/k3s/server/manifests/${manifest.name}
-  encoding: b64
+  encoding: gz+b64
   content: ${manifest.content}
-  owner: ec2-user:ec2-user
+  owner: root:root
   permissions: '0644'
 %{ endfor }

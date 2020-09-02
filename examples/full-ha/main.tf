@@ -89,8 +89,9 @@ module "servers" {
   state_bucket              = module.k3s.state_bucket
 
   # K3S Variables
-  k3s_tls_sans    = [module.k3s.tls_san]
-  k3s_node_labels = ["type=primary-server"]
+  k3s_tls_sans            = [module.k3s.tls_san]
+  k3s_node_labels         = ["type=primary-server"]
+  auto_deployed_manifests = []
 
   tags = var.tags
 }
