@@ -62,7 +62,7 @@ variable "spot" {
 variable "block_device_mappings" {
   type = object({
     name                  = string
-    volume_size           = number
+    size                  = number
     encrypted             = bool
     delete_on_termination = bool
   })
