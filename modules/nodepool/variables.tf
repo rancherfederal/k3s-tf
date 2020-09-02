@@ -61,17 +61,13 @@ variable "spot" {
 
 variable "block_device_mappings" {
   type = object({
-    name                  = string
-    size                  = number
-    encrypted             = bool
-    delete_on_termination = bool
+    size      = number
+    encrypted = bool
   })
 
   default = {
-    name                  = "/dev/sda1"
-    size                  = 32
-    encrypted             = true
-    delete_on_termination = true
+    size      = 32
+    encrypted = true
   }
 }
 

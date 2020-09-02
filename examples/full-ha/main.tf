@@ -72,13 +72,14 @@ module "servers" {
   source = "../../modules/nodepool"
 
   # Node variables
-  name                 = "primary-servers"
-  vpc_id               = module.network.vpc_id
-  subnets              = module.network.public_subnets
-  ami                  = data.aws_ami.rhel8.id
-  ssh_authorized_keys  = [tls_private_key.global_key.public_key_openssh]
-  iam_instance_profile = "InstanceOpsRole"
-  asg                  = { min : 1, max : 3, desired : 2 }
+  name                  = "primary-servers"
+  vpc_id                = module.network.vpc_id
+  subnets               = module.network.public_subnets
+  ami                   = data.aws_ami.rhel8.id
+  ssh_authorized_keys   = [tls_private_key.global_key.public_key_openssh]
+  iam_instance_profile  = "InstanceOpsRole"
+  asg                   = { min : 1, max : 3, desired : 2 }
+  block_device_mappings = { size : 64, encrypted : true }
 
   # Cluster join variables
   cluster                   = module.k3s.cluster

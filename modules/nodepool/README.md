@@ -1,7 +1,6 @@
 # nodepool
 
 Shared module for creating k3s server and agent nodepools.
-
 ## Requirements
 
 No requirements.
@@ -25,7 +24,7 @@ No requirements.
 | vpc\_id | VPC ID the nodepool is deployed to | `string` | n/a | yes |
 | asg | Autoscaling group scale, requires min, max, and desired | <pre>object({<br>    min     = number<br>    max     = number<br>    desired = number<br>  })</pre> | <pre>{<br>  "desired": 1,<br>  "max": 2,<br>  "min": 1<br>}</pre> | no |
 | auto\_deployed\_manifests | n/a | `list(string)` | `[]` | no |
-| block\_device\_mappings | n/a | <pre>object({<br>    name                  = string<br>    volume_size           = number<br>    encrypted             = bool<br>    delete_on_termination = bool<br>  })</pre> | <pre>{<br>  "delete_on_termination": true,<br>  "encrypted": true,<br>  "name": "/dev/sda1",<br>  "size": 32<br>}</pre> | no |
+| block\_device\_mappings | n/a | <pre>object({<br>    size      = number<br>    encrypted = bool<br>  })</pre> | <pre>{<br>  "encrypted": true,<br>  "size": 32<br>}</pre> | no |
 | controlplane\_loadbalancer | n/a | `string` | `null` | no |
 | dependencies\_script | Dependencies script responsible for any pre-node setup, overriding this overrides the default setup and requires AT LEAST the k3s binary and aws cli downloaded before proceeding | `string` | `null` | no |
 | enable\_cloud\_provider | n/a | `bool` | `true` | no |

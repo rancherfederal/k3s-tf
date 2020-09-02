@@ -24,16 +24,12 @@ resource "aws_launch_template" "this" {
   user_data              = data.template_cloudinit_config.this.rendered
   vpc_security_group_ids = concat([aws_security_group.this.id], [var.cluster_security_group], var.extra_security_groups)
 
-  dynamic "block_device_mappings" {
-    for_each = var.block_device_mappings
-
-    content {
-      device_name = lookup(block_device_mappings.value, "name", "/dev/sda1")
-      ebs {
-        volume_size           = lookup(block_device_mappings.value, "size", 32)
-        encrypted             = lookup(block_device_mappings.value, "encrypted", false)
-        delete_on_termination = lookup(block_device_mappings.value, "delete_on_termination", true)
-      }
+  block_device_mappings {
+    device_name = "/dev/sda1"
+    ebs {
+      volume_size           = var.block_device_mappings.size
+      encrypted             = var.block_device_mappings.encrypted
+      delete_on_termination = true
     }
   }
 
