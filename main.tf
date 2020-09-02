@@ -97,7 +97,7 @@ resource "aws_security_group_rule" "controlplane_ingress" {
   from_port         = module.controlplane_lb.port
   to_port           = module.controlplane_lb.port
   protocol          = "tcp"
-  security_group_id = aws_security_group.cluster.id
+  security_group_id = aws_security_group.shared_server.id
   type              = "ingress"
 
   cidr_blocks = [data.aws_vpc.this.cidr_block]
