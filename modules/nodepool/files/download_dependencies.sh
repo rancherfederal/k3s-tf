@@ -37,18 +37,12 @@ aws_cli() {
 
 rancher_yum_repo() {
   tee /etc/yum.repos.d/rpm.rancher.io.repo >/dev/null << EOF
-[rancher-rke2-common-testing]
-name=Rancher RKE2 Common Testing
-baseurl=https://rpm-testing.rancher.io/rke2/testing/common/centos/7/noarch
+[rancher]
+name=Rancher
+baseurl=https://rpm.rancher.io
 enabled=1
 gpgcheck=1
-gpgkey=https://rpm-testing.rancher.io/public.key
-[rancher-rke2-1-18-testing]
-name=Rancher RKE2 1.18 Testing
-baseurl=https://rpm-testing.rancher.io/rke2/testing/1.18/centos/7/x86_64
-enabled=1
-gpgcheck=1
-gpgkey=https://rpm-testing.rancher.io/public.key
+gpgkey=https://rpm.rancher.io/public.key
 EOF
 }
 
