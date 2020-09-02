@@ -60,7 +60,7 @@ rds_ca() {
 upload() {
   case "$1" in
     "server")
-      CONTROLPLANE_LB_DNS="$(aws elb describe-load-balancers --load-balancer-name $${CLUSTER}-$${NAME}-k3s-controlplane --query 'LoadBalancerDescriptions[*].DNSName' --output text)"
+      CONTROLPLANE_LB_DNS="$(aws elb describe-load-balancers --load-balancer-name $${CLUSTER}-k3scp --query 'LoadBalancerDescriptions[*].DNSName' --output text)"
 
       pushd /etc/rancher/k3s
 

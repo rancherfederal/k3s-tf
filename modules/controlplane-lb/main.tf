@@ -6,7 +6,7 @@ data "aws_vpc" "this" {
 # Classic Load Balancer Resources
 #
 resource "aws_elb" "this" {
-  name                      = "${var.name}-k3s-controlplane"
+  name                      = "${var.name}-k3scp"
   internal                  = var.internal
   subnets                   = var.subnets
   cross_zone_load_balancing = true
