@@ -2,7 +2,7 @@ locals {
   is_server = var.k3s_url == "" ? true : false
 
   tags = merge({
-    "Name"                                 = "${var.name}-nodepool",
+    "Name"                                 = "${var.cluster}-${var.name}-nodepool",
     "kubernetes.io/cluster/${var.cluster}" = "owned"
   }, var.tags)
 }

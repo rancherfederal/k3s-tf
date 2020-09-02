@@ -2,6 +2,10 @@
 
 K3S_STATE_PATH="/var/lib/rancher/k3s/state.env"
 
+# Cluster metadata
+CLUSTER="${cluster}"
+NAME="${name}"
+
 # Shared k3s args
 NODE_LABELS="${node_labels}"
 NODE_TAINTS="${node_taints}"
@@ -54,7 +58,23 @@ rds_ca() {
 }
 
 upload() {
-  /usr/local/bin/aws s3 cp /etc/rancher/k3s/k3s.yaml s3://${state_bucket}/k3s.yaml
+  case "$1" in
+    "server")
+      CONTROLPLANE_LB="$${CLUSTER}-$${NAME}-k3s-controlplane"
+
+      pushd /etc/rancher/k3s
+
+      sed 's|127.0.0.1|'$CONTROLPLANE_LB'|g' k3s.yaml > k3s-cp.yaml
+      /usr/local/bin/aws s3 cp k3s-cp.yaml s3://${state_bucket}/k3s-cp.yaml
+      rm -rf k3s-cp.yaml
+
+      popd
+      ;;
+    *)
+      info 'Skipping kubeconfig upload since we are not a server'
+      ;;
+  esac
+
 }
 
 bootstrap() {
@@ -127,5 +147,5 @@ bootstrap() {
   bootstrap ${type}
 
   # Upload kubeconfig to s3
-  upload
+  upload ${type}
 }

@@ -48,6 +48,9 @@ data "template_cloudinit_config" "this" {
     filename     = "02_bootstrap.sh"
     content_type = "text/x-shellscript"
     content = templatefile("${path.module}/files/bootstrap.sh", {
+      # Cluster metadata
+      cluster      = var.cluster
+      name         = var.name
       state_bucket = var.state_bucket
       state_key    = var.state_key
 
