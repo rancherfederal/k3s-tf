@@ -143,6 +143,9 @@ bootstrap() {
 
   rds_ca
 
+  # TODO: full selinux support in k3s is still a wip, while most deployments will work, it is not GA
+  setenforce 0
+
   # Boot
   bootstrap ${type}
 
