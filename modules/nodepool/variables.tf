@@ -109,9 +109,22 @@ variable "shared_agent_security_group" {
   default = null
 }
 
-variable "enable_cloud_provider" {
-  type    = bool
-  default = true
+variable "external_cloud_provider" {
+  type        = bool
+  default     = true
+  description = "Toggle creation of k3s cluster with builtin cloud provider disabled and cloud-provider=external, used in conjuction with deploy_cloud_controller_manager"
+}
+
+variable "deploy_cloud_controller_manager" {
+  type        = bool
+  default     = true
+  description = "Toggle deployment of aws cloud controller manager, disable when still requiring --cloud-provider=external but deploying with custom manfiests"
+}
+
+variable "enable_ebs_csi_driver" {
+  type        = bool
+  default     = true
+  description = "Toggle deployment of ebs csi driver"
 }
 
 variable "state_bucket" {

@@ -14,8 +14,9 @@ data "template_cloudinit_config" "this" {
       k3s_install       = base64gzip(file("${path.module}/files/k3s.sh"))
       nodedrain         = base64gzip(file("${path.module}/files/nodedrain.sh"))
       nodedrain_service = base64gzip(file("${path.module}/files/nodedrain.service"))
-      ccm               = var.enable_cloud_provider ? base64gzip(file("${path.module}/files/aws-ccm.yaml")) : ""
-      ebs               = var.enable_cloud_provider ? base64gzip(file("${path.module}/files/aws-ebs.yaml")) : ""
+
+      ccm = var.external_cloud_provider && var.deploy_cloud_controller_manager ? base64gzip(file("${path.module}/files/aws-ccm.yaml")) : ""
+      ebs = var.enable_ebs_csi_driver ? base64gzip(file("${path.module}/files/aws-ebs.yaml")) : ""
 
       ssh_authorized_keys = var.ssh_authorized_keys
 
@@ -72,7 +73,7 @@ data "template_cloudinit_config" "this" {
       server = var.k3s_url
 
       # Shared K3S Variables
-      cloud_provider = var.enable_cloud_provider
+      cloud_provider = var.external_cloud_provider
       k3s_version    = var.k3s_version
       kubelet_args   = join(";", var.k3s_kubelet_args)
       node_labels    = join(";", var.k3s_node_labels)

@@ -34,11 +34,12 @@ module "servers" {
   asg                  = { min : 1, max : 3, desired : 2 }
 
   # Cluster variables
-  cluster                   = module.k3s.cluster
-  cluster_security_group    = module.k3s.cluster_security_group
-  extra_security_groups     = [module.k3s.shared_server_security_group]
-  controlplane_loadbalancer = module.k3s.controlplane_loadbalancer
-  state_bucket              = module.k3s.state_bucket
+  cluster                         = module.k3s.cluster
+  cluster_security_group          = module.k3s.cluster_security_group
+  extra_security_groups           = [module.k3s.shared_server_security_group]
+  controlplane_loadbalancer       = module.k3s.controlplane_loadbalancer
+  state_bucket                    = module.k3s.state_bucket
+  deploy_cloud_controller_manager = false
 
   dependencies_script = local.download_dependencies
 
@@ -64,9 +65,10 @@ module "generic_agents" {
   asg                  = { min : 1, max : 2, desired : 1 }
 
   # Cluster Variables
-  cluster                = module.k3s.cluster
-  cluster_security_group = module.k3s.cluster_security_group
-  state_bucket           = module.k3s.state_bucket
+  cluster                         = module.k3s.cluster
+  cluster_security_group          = module.k3s.cluster_security_group
+  state_bucket                    = module.k3s.state_bucket
+  deploy_cloud_controller_manager = false
 
   dependencies_script = local.download_dependencies
 
