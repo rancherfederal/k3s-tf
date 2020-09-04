@@ -138,6 +138,10 @@ bootstrap() {
   export K3S_KUBECONFIG_MODE="0644"
   export INSTALL_K3S_SKIP_DOWNLOAD=true
 
+  # NOTE: k3s selinux is not GA yet, and as a result, while _most_ uses cases work with selinux enabled, it is not recommend quite yet
+  # TODO: revert this when k3s selinux goes GA
+  setenforce 0
+
   # Enable and start the node-drain service
   node_drain
 
