@@ -60,11 +60,11 @@ rds_ca() {
 upload() {
   case "$1" in
     "server")
-      CONTROLPLANE_LB="$${CLUSTER}-$${NAME}-k3s-controlplane"
+      CONTROLPLANE_LB_DNS="$(aws elb describe-load-balancers --load-balancer-name $${CLUSTER}-k3scp --query 'LoadBalancerDescriptions[*].DNSName' --output text)"
 
       pushd /etc/rancher/k3s
 
-      sed 's|127.0.0.1|'$CONTROLPLANE_LB'|g' k3s.yaml > k3s-cp.yaml
+      sed 's|127.0.0.1|'$CONTROLPLANE_LB_DNS'|g' k3s.yaml > k3s-cp.yaml
       /usr/local/bin/aws s3 cp k3s-cp.yaml s3://${state_bucket}/k3s.yaml
       rm -rf k3s-cp.yaml
 
@@ -146,6 +146,9 @@ bootstrap() {
   node_drain
 
   rds_ca
+
+  # TODO: full selinux support in k3s is still a wip, while most deployments will work, it is not GA
+  setenforce 0
 
   # Boot
   bootstrap ${type}
