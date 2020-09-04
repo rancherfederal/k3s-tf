@@ -10,7 +10,6 @@ NAME="${name}"
 NODE_LABELS="${node_labels}"
 NODE_TAINTS="${node_taints}"
 KUBELET_ARGS="${kubelet_args}"
-EXTERNAL_CLOUD_PROVIDER="cloud-provider=external"
 
 # Server k3s args
 TLS_SANS="${tls_sans}"
@@ -128,7 +127,7 @@ bootstrap() {
 
   # Unset secrets from s3 .env
   unset $(grep -v '^#' $K3S_STATE_PATH  | sed -E 's/(.*)=.*/\1/' | xargs)
-  rm -rf /var/lib/k3s/state.env
+  rm -rf /var/lib/rancher/k3s/state.env
 
   cat /usr/local/bin/k3s.sh | sh -s - $${type_args} $${shared_args}
 
@@ -146,9 +145,6 @@ bootstrap() {
   node_drain
 
   rds_ca
-
-  # TODO: full selinux support in k3s is still a wip, while most deployments will work, it is not GA
-  setenforce 0
 
   # Boot
   bootstrap ${type}
