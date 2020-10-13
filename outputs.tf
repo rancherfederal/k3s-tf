@@ -63,6 +63,11 @@ output "state_bucket" {
   description = "Name of the bucket used to store k3s cluster state, required to be passed in to node pools"
 }
 
+output "state_bucket_arn" {
+  value       = var.state_bucket == null ? module.state[0].arn : null
+  description = "ARN of the bucket used to store k3s cluster state, if it was created. Null will be outputted if the module did not create the bucket."
+}
+
 output "state_key" {
   value       = aws_s3_bucket_object.state.key
   description = "Name of the state object used to store k3s cluster state"

@@ -44,6 +44,7 @@ Examples are provided in the `examples/` directory for common use cases:
 | shared\_agent\_security\_group | Shared agent security group optional to be passed into all agent node pools |
 | shared\_server\_security\_group | Shared server security group required to be passed into all server node pools |
 | state\_bucket | Name of the bucket used to store k3s cluster state, required to be passed in to node pools |
+| state\_bucket\_arn | ARN of the bucket used to store k3s cluster state, if it was created. Null will be outputted if the module did not create the bucket. |
 | state\_key | Name of the state object used to store k3s cluster state |
 | tls\_san | DNS of the control plane load balancer, used for passing --tls-san to server nodepools |
 | token | Token used for k3s --token registration, added for brevity, does not need to be passed to module, it is loaded via S3 state bucket |
