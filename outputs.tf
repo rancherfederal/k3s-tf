@@ -55,6 +55,27 @@ output "token" {
   description = "Token used for k3s --token registration, added for brevity, does not need to be passed to module, it is loaded via S3 state bucket"
 }
 
+output "kubeconfig" {
+    value = "${data.aws_s3_bucket_object.kube-config-yaml.body}"
+}
+
+output "cluster_user" {
+  value = "${yamldecode(data.aws_s3_bucket_object.kube-config-yaml.body)["users"][0]["user"]["username"]}"
+  }
+
+output "cluster_pass" {
+  value = "${yamldecode(data.aws_s3_bucket_object.kube-config-yaml.body)["users"][0]["user"]["password"]}"
+  }
+
+output "cluster_endpoint" {
+  value = "${yamldecode(data.aws_s3_bucket_object.kube-config-yaml.body)["clusters"][0]["cluster"]["server"]}"
+  }
+
+output "cluster_ca_b64" {
+  value = "${yamldecode(data.aws_s3_bucket_object.kube-config-yaml.body)["clusters"][0]["cluster"]["certificate-authority-data"]}"
+  }
+
+
 #
 # State Bucket Resources
 #
@@ -67,3 +88,5 @@ output "state_key" {
   value       = aws_s3_bucket_object.state.key
   description = "Name of the state object used to store k3s cluster state"
 }
+
+

@@ -64,7 +64,7 @@ upload() {
       pushd /etc/rancher/k3s
 
       sed 's|127.0.0.1|'$CONTROLPLANE_LB_DNS'|g' k3s.yaml > k3s-cp.yaml
-      /usr/local/bin/aws s3 cp k3s-cp.yaml s3://${state_bucket}/k3s.yaml
+      /usr/local/bin/aws s3 cp k3s-cp.yaml s3://${state_bucket}/k3s.yaml --content-type text/yaml
       rm -rf k3s-cp.yaml
 
       popd

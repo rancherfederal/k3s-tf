@@ -17,8 +17,16 @@ resource "aws_security_group" "this" {
 #
 # Launch template
 #
+
+resource "random_string" "random" {
+  length = 8
+  special = false
+  lower = true
+  upper = false
+}
+
 resource "aws_launch_template" "this" {
-  name                   = "${var.name}-k3s-nodepool"
+  name                   = "${var.name}-k3s-nodepool-${random_string.random.result}"
   image_id               = var.ami
   instance_type          = var.instance_type
   user_data              = data.template_cloudinit_config.this.rendered
