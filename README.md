@@ -39,6 +39,11 @@ Examples are provided in the `examples/` directory for common use cases:
 |------|-------------|
 | cluster | Name of the cluster to be passed into all node pools |
 | cluster\_security\_group | Shared cluster security group required to be passed into all node pools |
+| kubeconfig | Kubeconfig for cluster |
+| cluster_user | user for cluster |
+| cluster_pass | password for cluster |
+| cluster_ca_b64 | base64 encoded CA for cluster |
+| cluster_endpoint | fqdn for cluster load balancer |
 | controlplane\_loadbalancer | Name of the controlplane load balancer |
 | datastore\_endpoint | Formatted output for k3s --datastore-endpoint.  This is output for verbosity and does not need to be passed into node pools, it will be fetched from the cluster state bucket on node boot |
 | shared\_agent\_security\_group | Shared agent security group optional to be passed into all agent node pools |
