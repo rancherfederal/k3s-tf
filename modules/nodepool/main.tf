@@ -17,12 +17,17 @@ resource "aws_security_group" "this" {
 #
 # Launch template
 #
+
 resource "aws_launch_template" "this" {
-  name                   = "${var.name}-k3s-nodepool"
+  name                   = "${var.name}-k3s-nodepool-${md5(data.template_cloudinit_config.this.rendered)}"
   image_id               = var.ami
   instance_type          = var.instance_type
   user_data              = data.template_cloudinit_config.this.rendered
   vpc_security_group_ids = concat([aws_security_group.this.id], [var.cluster_security_group], var.extra_security_groups)
+
+  lifecycle {
+    create_before_destroy = true
+  }
 
   block_device_mappings {
     device_name = "/dev/sda1"
@@ -47,7 +52,7 @@ resource "aws_launch_template" "this" {
 # Autoscaling group
 #
 resource "aws_autoscaling_group" "this" {
-  name                = "${var.name}-k3s-nodepool"
+  name                = "${var.name}-k3s-nodepool-${md5(data.template_cloudinit_config.this.rendered)}"
   vpc_zone_identifier = var.subnets
 
   min_size         = var.asg.min
@@ -57,6 +62,10 @@ resource "aws_autoscaling_group" "this" {
   # Health check and target groups dependent on whether we're a server or not (identified via k3s_url)
   health_check_type = local.is_server ? "ELB" : "EC2"
   load_balancers    = local.is_server ? [var.controlplane_loadbalancer] : []
+
+  lifecycle {
+    create_before_destroy = true
+  }
 
   dynamic "launch_template" {
     for_each = var.spot ? [] : ["spot"]
